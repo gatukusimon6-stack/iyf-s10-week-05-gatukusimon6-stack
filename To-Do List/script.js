@@ -1,3 +1,13 @@
+// =======================
+// STATE
+// =======================
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let currentFilter = "all";
+
+
+// =======================
+// DOM ELEMENTS
+// =======================
 const input = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
@@ -9,54 +19,64 @@ const completedEl = document.getElementById("completed");
 const filters = document.querySelectorAll(".filter");
 const clearCompletedBtn = document.getElementById("clearCompleted");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-let currentFilter = "all";
 
-
-// ================= SAVE TO LOCAL STORAGE =================
+// =======================
+// LOCAL STORAGE
+// =======================
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
-// ================= ADD TASK =================
-addBtn.addEventListener("click", addTask);
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter") addTask();
-});
-
+// =======================
+// ADD TASK
+// =======================
 function addTask() {
-  if (input.value.trim() === "") return;
+  const text = input.value.trim();
+  if (!text) return;
 
   tasks.push({
-    text: input.value,
+    text,
     completed: false
   });
 
   input.value = "";
 
-  saveTasks();     // ⭐ save offline
+  saveTasks();
   renderTasks();
 }
 
+addBtn.addEventListener("click", addTask);
 
-// ================= RENDER TASKS =================
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") addTask();
+});
+
+
+// =======================
+// RENDER TASKS
+// =======================
 function renderTasks() {
   taskList.innerHTML = "";
 
-  let filteredTasks = tasks.filter(task => {
+  const filteredTasks = tasks.filter((task) => {
     if (currentFilter === "active") return !task.completed;
     if (currentFilter === "completed") return task.completed;
     return true;
   });
 
-  filteredTasks.forEach((task, index) => {
+  filteredTasks.forEach((task) => {
+    const index = tasks.indexOf(task); // FIXED INDEX ISSUE
+
     const li = document.createElement("li");
-    if (task.completed) li.classList.add("completed");
+
+    if (task.completed) {
+      li.classList.add("completed");
+    }
 
     li.innerHTML = `
       <div class="task-left">
-        <input type="checkbox" ${task.completed ? "checked" : ""}>
+        <input type="checkbox" ${task.completed ? "checked" : ""} />
         <span>${task.text}</span>
       </div>
       <span class="delete">✖</span>
@@ -64,15 +84,15 @@ function renderTasks() {
 
     // Toggle complete
     li.querySelector("input").addEventListener("change", () => {
-      task.completed = !task.completed;
-      saveTasks();     // ⭐ save change
+      tasks[index].completed = !tasks[index].completed;
+      saveTasks();
       renderTasks();
     });
 
-    // Delete
+    // Delete task
     li.querySelector(".delete").addEventListener("click", () => {
       tasks.splice(index, 1);
-      saveTasks();     // ⭐ save change
+      saveTasks();
       renderTasks();
     });
 
@@ -83,10 +103,12 @@ function renderTasks() {
 }
 
 
-// ================= STATS =================
+// =======================
+// STATS
+// =======================
 function updateStats() {
   const total = tasks.length;
-  const completed = tasks.filter(t => t.completed).length;
+  const completed = tasks.filter((t) => t.completed).length;
   const active = total - completed;
 
   totalEl.textContent = total;
@@ -95,8 +117,10 @@ function updateStats() {
 }
 
 
-// ================= FILTERS =================
-filters.forEach(btn => {
+// =======================
+// FILTERS
+// =======================
+filters.forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelector(".filter.active").classList.remove("active");
     btn.classList.add("active");
@@ -107,13 +131,18 @@ filters.forEach(btn => {
 });
 
 
-// ================= CLEAR COMPLETED =================
+// =======================
+// CLEAR COMPLETED
+// =======================
 clearCompletedBtn.addEventListener("click", () => {
-  tasks = tasks.filter(task => !task.completed);
-  saveTasks();       // ⭐ save change
+  tasks = tasks.filter((task) => !task.completed);
+
+  saveTasks();
   renderTasks();
 });
 
 
-// ================= LOAD SAVED TASKS =================
+// =======================
+// INIT APP
+// =======================
 renderTasks();
