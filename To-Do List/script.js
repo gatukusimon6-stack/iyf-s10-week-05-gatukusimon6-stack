@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-=======
-// =======================
-// STATE
-// =======================
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-let currentFilter = "all";
-
-
-// =======================
-// DOM ELEMENTS
-// =======================
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
 const input = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
@@ -22,24 +9,16 @@ const completedEl = document.getElementById("completed");
 const filters = document.querySelectorAll(".filter");
 const clearCompletedBtn = document.getElementById("clearCompleted");
 
-<<<<<<< HEAD
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let currentFilter = "all";
 
 
 // ================= SAVE TO LOCAL STORAGE =================
-=======
-
-// =======================
-// LOCAL STORAGE
-// =======================
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
-<<<<<<< HEAD
 // ================= ADD TASK =================
 addBtn.addEventListener("click", addTask);
 input.addEventListener("keypress", e => {
@@ -51,23 +30,11 @@ function addTask() {
 
   tasks.push({
     text: input.value,
-=======
-// =======================
-// ADD TASK
-// =======================
-function addTask() {
-  const text = input.value.trim();
-  if (!text) return;
-
-  tasks.push({
-    text,
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
     completed: false
   });
 
   input.value = "";
 
-<<<<<<< HEAD
   saveTasks();     // ⭐ save offline
   renderTasks();
 }
@@ -78,32 +45,11 @@ function renderTasks() {
   taskList.innerHTML = "";
 
   let filteredTasks = tasks.filter(task => {
-=======
-  saveTasks();
-  renderTasks();
-}
-
-addBtn.addEventListener("click", addTask);
-
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") addTask();
-});
-
-
-// =======================
-// RENDER TASKS
-// =======================
-function renderTasks() {
-  taskList.innerHTML = "";
-
-  const filteredTasks = tasks.filter((task) => {
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
     if (currentFilter === "active") return !task.completed;
     if (currentFilter === "completed") return task.completed;
     return true;
   });
 
-<<<<<<< HEAD
   filteredTasks.forEach((task, index) => {
     const li = document.createElement("li");
     if (task.completed) li.classList.add("completed");
@@ -111,20 +57,6 @@ function renderTasks() {
     li.innerHTML = `
       <div class="task-left">
         <input type="checkbox" ${task.completed ? "checked" : ""}>
-=======
-  filteredTasks.forEach((task) => {
-    const index = tasks.indexOf(task); // FIXED INDEX ISSUE
-
-    const li = document.createElement("li");
-
-    if (task.completed) {
-      li.classList.add("completed");
-    }
-
-    li.innerHTML = `
-      <div class="task-left">
-        <input type="checkbox" ${task.completed ? "checked" : ""} />
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
         <span>${task.text}</span>
       </div>
       <span class="delete">✖</span>
@@ -132,7 +64,6 @@ function renderTasks() {
 
     // Toggle complete
     li.querySelector("input").addEventListener("change", () => {
-<<<<<<< HEAD
       task.completed = !task.completed;
       saveTasks();     // ⭐ save change
       renderTasks();
@@ -142,17 +73,6 @@ function renderTasks() {
     li.querySelector(".delete").addEventListener("click", () => {
       tasks.splice(index, 1);
       saveTasks();     // ⭐ save change
-=======
-      tasks[index].completed = !tasks[index].completed;
-      saveTasks();
-      renderTasks();
-    });
-
-    // Delete task
-    li.querySelector(".delete").addEventListener("click", () => {
-      tasks.splice(index, 1);
-      saveTasks();
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
       renderTasks();
     });
 
@@ -163,19 +83,10 @@ function renderTasks() {
 }
 
 
-<<<<<<< HEAD
 // ================= STATS =================
 function updateStats() {
   const total = tasks.length;
   const completed = tasks.filter(t => t.completed).length;
-=======
-// =======================
-// STATS
-// =======================
-function updateStats() {
-  const total = tasks.length;
-  const completed = tasks.filter((t) => t.completed).length;
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
   const active = total - completed;
 
   totalEl.textContent = total;
@@ -184,15 +95,8 @@ function updateStats() {
 }
 
 
-<<<<<<< HEAD
 // ================= FILTERS =================
 filters.forEach(btn => {
-=======
-// =======================
-// FILTERS
-// =======================
-filters.forEach((btn) => {
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
   btn.addEventListener("click", () => {
     document.querySelector(".filter.active").classList.remove("active");
     btn.classList.add("active");
@@ -203,29 +107,13 @@ filters.forEach((btn) => {
 });
 
 
-<<<<<<< HEAD
 // ================= CLEAR COMPLETED =================
 clearCompletedBtn.addEventListener("click", () => {
   tasks = tasks.filter(task => !task.completed);
   saveTasks();       // ⭐ save change
-=======
-// =======================
-// CLEAR COMPLETED
-// =======================
-clearCompletedBtn.addEventListener("click", () => {
-  tasks = tasks.filter((task) => !task.completed);
-
-  saveTasks();
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
   renderTasks();
 });
 
 
-<<<<<<< HEAD
 // ================= LOAD SAVED TASKS =================
-=======
-// =======================
-// INIT APP
-// =======================
->>>>>>> 4c14b859b4e4c6ae94e2e5090721b6f24d5ff4a7
 renderTasks();
