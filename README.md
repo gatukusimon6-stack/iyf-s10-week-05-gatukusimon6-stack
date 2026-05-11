@@ -29,4 +29,4 @@ Understanding the DOM tree and Debugging difficulties.
 ---
 
 ## Live Demo (if deployed)
-[View Live Demo](http://127.0.0.1:5500/To-Do%20List/index.html)
+[View Live Demo](http://127.0.0.1:5500/To-Do%20List%20Application/index.html)
